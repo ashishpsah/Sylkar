@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "403616817233",
+    "firebase_url": "https://sylkar-4cbdc.firebaseio.com",
+    "project_id": "sylkar-4cbdc",
+    "storage_bucket": "sylkar-4cbdc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403616817233:android:88386c0ed441db56",
+        "android_client_info": {
+          "package_name": "com.example.ashish.sylkar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403616817233-vn4k2ihcic5apv7mprsqd58vhua77464.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ashish.sylkar",
+            "certificate_hash": "b40a0e210fafb477aa04b897fbc12b3766430b5b"
+          }
+        },
+        {
+          "client_id": "403616817233-uqfop2533a9ac3brtn8n8utjrurlb6qs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsgtJaNzUV_3NBUz62WvIZUqjE4zH7OKE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403616817233-uqfop2533a9ac3brtn8n8utjrurlb6qs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
