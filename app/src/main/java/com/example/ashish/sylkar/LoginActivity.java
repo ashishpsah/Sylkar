@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.api.client.repackaged.com.google.common.base.Objects;
+
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,14 +36,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         firebaseAuth = FirebaseAuth.getInstance();
-        //check if user is already logged in
-       /* if(firebaseAuth.getCurrentUser()!=null){
-            //start the profile activity
-            //finish();//before starting another activity kill current activity
-            startActivity(new Intent(getApplicationContext(), Dashboard.class));
-
-
-        }*/
         //initialize the views
         button3 =(Button) findViewById(R.id.button3);
         emailid =(EditText) findViewById(R.id.emailid);
@@ -72,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             else
                                 startActivity(new Intent(getApplicationContext(), Homepage.class));
-                            user =firebaseAuth.getCurrentUser();
+                            user = firebaseAuth.getCurrentUser();
                             String User_id = user.getUid();
                             //set user tag
                             OneSignal.sendTag("User_ID", User_id);
@@ -83,16 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                 Toast.makeText(LoginActivity.this, "Authentication failed.",
                                         Toast.LENGTH_LONG).show();
-
-
                         }
-
-
-
-
-
-
-
                     }
                 });
 

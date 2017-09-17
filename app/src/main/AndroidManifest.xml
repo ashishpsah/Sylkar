@@ -23,9 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".logo1" />
-        <activity android:name=".logo2" />
-        <activity android:name=".logo3" />
+        <activity android:name=".logo" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />

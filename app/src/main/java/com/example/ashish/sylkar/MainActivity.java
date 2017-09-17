@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                final Intent mainIntent = new Intent(MainActivity.this, logo1.class);
+                final Intent mainIntent = new Intent(MainActivity.this, logo.class);
                 MainActivity.this.startActivity(mainIntent);
                 MainActivity.this.finish();
             }
