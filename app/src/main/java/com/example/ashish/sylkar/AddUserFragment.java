@@ -38,7 +38,7 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
     private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseUsers;
-    public static final String TAG = "YOUR-TAG-NAME";
+    public static final String TAG = "Sylkar Add user logs";
 
 
 
@@ -58,7 +58,7 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
 
             @Override
             public void onClick(View v) {
-                createAccount(editTextEmail.getText().toString(), editTextPassword.getText().toString());
+                createAccount(editTextEmail.getText().toString().toLowerCase(), editTextPassword.getText().toString());
 
 
             }
