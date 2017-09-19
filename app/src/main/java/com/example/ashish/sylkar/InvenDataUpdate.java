@@ -12,9 +12,8 @@ import com.firebase.client.Firebase;
 
 public class InvenDataUpdate extends AppCompatActivity implements View.OnClickListener {
     private Firebase mRoofRef;
-    InvenDataView invenDataView = new InvenDataView();
-    private String Key = invenDataView.UserTag.toString();
-
+    UpdateInventory updateInventory = new UpdateInventory();
+    private String Key = updateInventory.UserTag.toString();
     Button buttonUpdate;
     TextView etQuant;
 

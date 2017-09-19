@@ -5,7 +5,12 @@ package com.example.ashish.sylkar;
  */
 
 public class Users {
-    String etTitle,etAddress,etPhone,etIBAN,etJob,imageurl;
+    String etTitle;
+    String etAddress;
+    String etPhone;
+    String etIBAN;
+    String etJob;
+    String imageurl;
     public Users()
     {
 
@@ -28,34 +33,51 @@ public class Users {
         this.imageurl = imageurl;
     }
 
-
-
-
-
-    public String getName() {
+    public String getEtTitle() {
         return etTitle;
     }
 
-    public String getAddress() {
+    public void setEtTitle(String etTitle) {
+        this.etTitle = etTitle;
+    }
+
+    public String getEtAddress() {
         return etAddress;
     }
 
-    public String getPhone() {
+    public void setEtAddress(String etAddress) {
+        this.etAddress = etAddress;
+    }
+
+    public String getEtPhone() {
         return etPhone;
+    }
+
+    public void setEtPhone(String etPhone) {
+        this.etPhone = etPhone;
     }
 
     public String getEtIBAN() {
         return etIBAN;
     }
 
-    public String getJob() {
+    public void setEtIBAN(String etIBAN) {
+        this.etIBAN = etIBAN;
+    }
+
+    public String getEtJob() {
         return etJob;
     }
 
+    public void setEtJob(String etJob) {
+        this.etJob = etJob;
+    }
 
     public String getImageurl() {
         return imageurl;
     }
 
-
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
 }

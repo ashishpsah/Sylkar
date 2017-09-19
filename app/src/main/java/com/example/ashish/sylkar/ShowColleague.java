@@ -44,8 +44,8 @@ public class ShowColleague extends ArrayAdapter<Users> {
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.textViewName);
         TextView textViewJob = (TextView) listViewItem.findViewById(R.id.textViewJob);
         Users users = usersList.get(position);
-        textViewName.setText(users.getName());
-        textViewJob.setText(users.getJob());
+        //textViewName.setText(users.getName());
+        //textViewJob.setText(users.getJob());
         return super.getView(position, convertView, parent);
     }
 }

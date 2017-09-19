@@ -12,7 +12,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -25,9 +29,12 @@ public class SendNotification extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser user;
     private DatabaseReference mFirebaseDatabase;
-    String Current,message;
+    String Current,message,userid;
+    static String username;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
-    final ShowData model =new ShowData();
+    final MyColleagueFragment model =new MyColleagueFragment();
     private static final String TAG= SendNotification.class.getSimpleName();
 
 
@@ -37,12 +44,44 @@ public class SendNotification extends AppCompatActivity {
         setContentView(R.layout.activity_send_notification);
         buttonNotify = (Button )findViewById(R.id.buttonNotify);
         editTextNotify = (EditText) findViewById(R.id.editTextNotify);
+        mAuth= FirebaseAuth.getInstance();
+        user =mAuth.getCurrentUser();
+        Current =  model.UserTag;
+        userid = user.getUid().toString();
+        database = FirebaseDatabase.getInstance();
 
+        myRef = database.getReference();
+        myRef.child("Users").child(userid).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        try {
+                            Users users = dataSnapshot.getValue(Users.class);
+
+                            username = users.etTitle; // "John Doe"
+
+                        }
+                        catch (Exception e) {
+                            Toast.makeText(SendNotification.this,
+                                    "Please add your data from Edit Profile menu",
+                                    Toast.LENGTH_LONG).show();
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
 
         buttonNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Read from the database
+
 
 
                 Toast.makeText(getApplicationContext(), "Notification Sent" , Toast.LENGTH_SHORT).show();
@@ -53,9 +92,7 @@ public class SendNotification extends AppCompatActivity {
 
             }
         });
-        mAuth= FirebaseAuth.getInstance();
-        user =mAuth.getCurrentUser();
-        Current =  model.UserTag;
+
     }
 
 
@@ -68,6 +105,7 @@ public class SendNotification extends AppCompatActivity {
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String Sender = user.getEmail();
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -76,8 +114,8 @@ public class SendNotification extends AppCompatActivity {
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                             .permitAll().build();
                     StrictMode.setThreadPolicy(policy);
-                    String send_email;
-                    message = Sender +" SAYS:" +
+
+                    message = username +" SAYS:" +
                             System.lineSeparator() + editTextNotify.getText().toString();
 
 

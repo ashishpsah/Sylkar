@@ -19,6 +19,7 @@ public class logo extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE);   //code for immersive mode of display
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -48,6 +48,7 @@ public class EditProfileFragment extends Fragment {
     String imageurl;
 
 
+
     public EditProfileFragment() {
         // Required empty public constructor
     }
@@ -104,6 +105,7 @@ public class EditProfileFragment extends Fragment {
 
 
                 editProfileData();
+
 
             }
         });

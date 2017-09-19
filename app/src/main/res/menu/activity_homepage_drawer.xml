@@ -16,7 +16,7 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title=" Add Inventory" />
         <item
-            android:id="@+id/schedule"
+            android:id="@+id/updateInventory"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Update Inventory" />
 

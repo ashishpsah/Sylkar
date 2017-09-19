@@ -1,7 +1,7 @@
 package com.example.ashish.sylkar;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,19 +14,34 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class Homepage extends AppCompatActivity
-        implements ViewInventory.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener  {
+        implements NavigationView.OnNavigationItemSelectedListener  {
 
     private FirebaseAuth mAuth;
     FirebaseUser user;
+    private Firebase mRoofRef;
+    String currentuser,username=null,dp=null;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+    public static final String TAG = "Sylkar login logs";
+    ImageView userimage;
+    TextView name,email;
 
 
 
@@ -39,10 +54,11 @@ public class Homepage extends AppCompatActivity
         setContentView(R.layout.activity_homepage);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
 
+        myRef = database.getReference();
 
-
-        set_nav_header();
+            set_nav_header();
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -72,15 +88,53 @@ public class Homepage extends AppCompatActivity
             // User logged in
             //
             //email.setText("HI ALL");
+
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
             navigationView.setNavigationItemSelectedListener(this);
             View header=navigationView.getHeaderView(0);
 /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
-           TextView name = (TextView)header.findViewById(R.id.name);
-           TextView email = (TextView)header.findViewById(R.id.email);
+            name = (TextView)header.findViewById(R.id.name);
+            email = (TextView)header.findViewById(R.id.email);
+            userimage = (ImageView)header.findViewById(R.id.imageView);
             String emailAddress = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-            name.setText("ASHISH");
+            user = mAuth.getCurrentUser();
+            currentuser = user.getUid().toString();
+            mRoofRef = new Firebase("https://sylkar-4cbdc.firebaseio.com/").child("Users");
+            // Read from the database
+            myRef.child("Users").child(currentuser).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            try {
+                                Users users = dataSnapshot.getValue(Users.class);
+
+                                username = users.etTitle; // "John Doe"
+                                dp = users.imageurl.toString();
+                                name.setText(username);
+                                name.setTextColor(Color.parseColor("#000000"));
+                                //Toast.makeText(Homepage.this,dp, Toast.LENGTH_LONG).show();
+                                //if(!(TextUtils.isEmpty(dp)))
+                                Picasso.with(Homepage.this).load(dp).into(userimage);
+                            }
+                            catch (Exception e) {
+                                Toast.makeText(Homepage.this,
+                                        "Please add your data from Edit Profile menu",
+                                        Toast.LENGTH_LONG).show();
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
             email.setText(emailAddress.toString());
+            email.setTextColor(Color.parseColor("#000000"));
         }
 
     }
@@ -124,7 +178,10 @@ public class Homepage extends AppCompatActivity
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(Homepage.this, "Successfully send you response...Login Again After Updating your Password", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Homepage.this,
+                                            "Successfully send you response..." +
+                                                    "Login Again After Updating your Password",
+                                            Toast.LENGTH_LONG).show();
 
 
                                 }
@@ -170,14 +227,18 @@ public class Homepage extends AppCompatActivity
                     homeFragment).commit();
 
         }
-        else if (id == R.id.schedule) {
+        /*else if (id == R.id.schedule) {
             startActivity(new Intent(this, InvenDataView.class));
 
 
 
-        } else if (id == R.id.coll) {
-            startActivity(new Intent(this, ShowData.class));
-
+        }*/ else if (id == R.id.coll) {
+            //startActivity(new Intent(this, ShowData.class));
+            MyColleagueFragment myColleagueFragment = new MyColleagueFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    myColleagueFragment).commit();
         }
         else if (id == R.id.inventory) {
             AddInventory addInventory = new AddInventory();
@@ -185,6 +246,15 @@ public class Homepage extends AppCompatActivity
             manager.beginTransaction().replace(
                     R.id.relativelayout_for_fragment,
                     addInventory).commit();
+
+        }
+        else if (id == R.id.updateInventory) {
+            //startActivity(new Intent(this, InvenDataView.class));
+            UpdateInventory updateInventory = new UpdateInventory();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    updateInventory).commit();
 
         }
 
@@ -207,8 +277,5 @@ public class Homepage extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
 }

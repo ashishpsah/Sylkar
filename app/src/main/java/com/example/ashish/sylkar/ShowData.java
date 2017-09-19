@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.api.client.repackaged.com.google.common.base.Objects;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -84,7 +83,7 @@ public class ShowData extends AppCompatActivity {
 
                 //OnClick Item
                 String admin = "sylkewulff@gmail.com".toString().trim();
-                if(Objects.equal(CurrentUser,admin)){
+                if(CurrentUser.equals(admin)){
 
                     viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 
