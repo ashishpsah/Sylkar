@@ -7,25 +7,25 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Home" />
         <item
-            android:id="@+id/createschedule"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Create Schedule" />
-        <item
-            android:id="@+id/eagaleye"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Eagal's Eye" />
-        <item
-            android:id="@+id/handleissues"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Handle issues" />
-        <item
             android:id="@+id/mycoll"
             android:icon="@drawable/ic_menu_manage"
-            android:title="My Colleagues" />
+            android:title="My Gang" />
         <item
-            android:id="@+id/inventory"
+            android:id="@+id/gdetails"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="User data" />
+        <item
+            android:id="@+id/addcoll"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Add Colleagues" />
+        <item
+            android:id="@+id/addinventory"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Inventory" />
+            android:title="Add Inventory" />
+        <item
+            android:id="@+id/updateinventory"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Update Inventory" />
     </group>
 
     <item android:title="Accounts">
@@ -34,10 +34,7 @@
                 android:id="@+id/admineditprofile"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Edit Profile" />
-            <item
-                android:id="@+id/delete"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Delete Colleague" />
+
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_menu_send"

@@ -68,7 +68,7 @@ public class ShowData extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        //Log.d("LOGGED", "IN onStart ");
+
         mFirebaseAdapter = new FirebaseRecyclerAdapter<ShowDataItems, ShowDataViewHolder>(ShowDataItems.class, R.layout.show_data_single_item, ShowDataViewHolder.class, myRef) {
 
 
@@ -81,7 +81,7 @@ public class ShowData extends AppCompatActivity {
 
 
 
-                //OnClick Item
+
                 String admin = "sylkewulff@gmail.com".toString().trim();
                 if(CurrentUser.equals(admin)){
 

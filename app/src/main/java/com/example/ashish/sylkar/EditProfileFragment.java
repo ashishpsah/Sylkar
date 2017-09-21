@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -45,7 +46,9 @@ public class EditProfileFragment extends Fragment {
     private Uri mImageUri = null;
     private DatabaseReference mdatabaseRef;
     private StorageReference mStorage;
-    String imageurl;
+    String imageurl,userid;
+    FirebaseAuth mAuth;
+    FirebaseUser user;
 
 
 
@@ -66,6 +69,9 @@ public class EditProfileFragment extends Fragment {
         etAddress = (TextView)getView(). findViewById(R.id.etAddress);
         etIBAN = (TextView) getView().findViewById(R.id.etIBAN);
         etJob = (TextView) getView().findViewById(R.id.etJob);
+        mAuth= FirebaseAuth.getInstance();
+        user =mAuth.getCurrentUser();
+        userid = user.getUid().toString();
 
         //Initialize the Progress Bar
         mProgressDialog = new ProgressDialog(getContext());
@@ -150,7 +156,15 @@ public class EditProfileFragment extends Fragment {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             mdatabaseRef.child(uid).setValue(users);
             Toast.makeText(getContext(), "Updated Info", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getContext(), Homepage.class));
+
+            if(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")){
+                startActivity(new Intent(getContext(), AdminHomepage.class));
+            }
+
+            else{
+                startActivity(new Intent(getContext(), Homepage.class));
+            }
+
         }
         // Toast.makeText(getContext(),"Data Added Successfully",Toast.LENGTH_LONG).show();
     }

@@ -27,8 +27,9 @@ public class InvenDataView extends AppCompatActivity {
     DatabaseReference myRef;
     static String UserTag;
     private FirebaseRecyclerAdapter<InventoryData, InvenDataView.ShowDataViewHolder> mFirebaseAdapter;
-    private FirebaseAuth firebaseAuth;
-    String CurrentUser;
+    String userid;
+    private FirebaseAuth mAuth;
+    FirebaseUser user;
 
 
 
@@ -44,9 +45,12 @@ public class InvenDataView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_data_layout);
         firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        CurrentUser = user.getEmail();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        userid = user.getUid().toString();
 
 
 
@@ -75,51 +79,13 @@ public class InvenDataView extends AppCompatActivity {
             public void populateViewHolder(final InvenDataView.ShowDataViewHolder viewHolder, InventoryData model, final int position) {
                 viewHolder.imageurl(model.getImageurl());
                 viewHolder.name(model.getEtTitle()+":- "+ model.getEtQuant()+" Left");
-
-
-
-
-
-                //OnClick Item
-                String admin = "sylkewulff@gmail.com".toString().trim();
-                if(CurrentUser.equals(admin)){
-
+                if(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")){
                     viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 
                         @Override
                         public void onClick(final View v) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(InvenDataView.this);
-                            builder.setMessage("Do you want to Delete this data ?").setCancelable(false)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            int selectedItems = position;
-                                            mFirebaseAdapter.getRef(selectedItems).removeValue();
-                                            mFirebaseAdapter.notifyItemRemoved(selectedItems);
-                                            recyclerView.invalidate();
-                                            onStart();
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.cancel();
-                                        }
-                                    });
-                            AlertDialog dialog = builder.create();
-                            dialog.setTitle("Confirm");
-                            dialog.show();
-                        }
-                    });
-
-                }
-                else {
-                    viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(final View v) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(InvenDataView.this);
-                            builder.setMessage("What you want to do with this item?").setCancelable(false)
+                            builder.setMessage("What you want  toooo to do with this item?").setCancelable(false)
                                     .setPositiveButton("Update", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -149,6 +115,38 @@ public class InvenDataView extends AppCompatActivity {
                             dialog.show();
                         }
                     });
+
+
+                }
+                else {
+                    viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(final View v) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(InvenDataView.this);
+                            builder.setMessage("Do you want to Delete this data ?").setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            int selectedItems = position;
+                                            mFirebaseAdapter.getRef(selectedItems).removeValue();
+                                            mFirebaseAdapter.notifyItemRemoved(selectedItems);
+                                            recyclerView.invalidate();
+                                            onStart();
+                                        }
+                                    })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                            AlertDialog dialog = builder.create();
+                            dialog.setTitle("Confirm");
+                            dialog.show();
+                        }
+                    });
+
                 }
 
 

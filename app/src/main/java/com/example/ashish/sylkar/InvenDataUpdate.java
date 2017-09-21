@@ -1,21 +1,29 @@
 package com.example.ashish.sylkar;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class InvenDataUpdate extends AppCompatActivity implements View.OnClickListener {
     private Firebase mRoofRef;
     UpdateInventory updateInventory = new UpdateInventory();
     private String Key = updateInventory.UserTag.toString();
+
     Button buttonUpdate;
     TextView etQuant;
+    private FirebaseAuth mAuth;
+    FirebaseUser user;
+    String userid;
+
 
 
     @Override
@@ -26,6 +34,25 @@ public class InvenDataUpdate extends AppCompatActivity implements View.OnClickLi
         buttonUpdate = (Button)findViewById(R.id.buttonUpdate);
         etQuant =(TextView)findViewById(R.id.etQuant);
         buttonUpdate.setOnClickListener(this);
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        userid = user.getUid().toString();
+        if(getSupportActionBar() != null){
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home)
+        {
+            finish();
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -41,8 +68,18 @@ public class InvenDataUpdate extends AppCompatActivity implements View.OnClickLi
             else{
                 mRoofRef = new Firebase("https://sylkar-4cbdc.firebaseio.com/").child("Inventory");
                 mRoofRef.child(Key).child("etQuant").setValue(Quant);
-                startActivity(new Intent(InvenDataUpdate.this, Homepage.class));
                 Toast.makeText(getApplicationContext(), "INVENTORY UPDATED", Toast.LENGTH_LONG).show();
+
+                if(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")){
+                    startActivity(new Intent(InvenDataUpdate.this, AdminHomepage.class));
+
+                }
+
+                else{
+                    startActivity(new Intent(InvenDataUpdate.this, Homepage.class));
+
+                }
+
 
             }
 

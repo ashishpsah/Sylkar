@@ -35,22 +35,30 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AdminHomepage"
-            android:label="@string/title_activity_admin_homepage"
+            android:label="Home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ShowColleague" />
         <activity android:name=".UploadInfo" />
         <activity android:name=".ForgotPasswod" />
         <activity android:name=".ForgotPassword" />
         <activity android:name=".ShowData" />
-        <activity android:name=".UpdateEmail" />
-        <activity android:name=".SendNotification" />
+        <activity
+            android:name=".UpdateEmail"
+            android:label="Update Email" />
+        <activity
+            android:name=".SendNotification"
+            android:label="Send Notification" />
         <activity android:name=".DeleteColleague" />
         <activity
             android:name=".Inventory"
             android:label="@string/title_activity_inventory"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".InvenDataView" />
-        <activity android:name=".InvenDataUpdate"></activity>
+        <activity
+            android:name=".InvenDataUpdate"
+            android:label="Update Inventory" />
+        <activity android:name=".ViewGangMember"
+            android:label="User Details"></activity>
     </application>
 
 </manifest>

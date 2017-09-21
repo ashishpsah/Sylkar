@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,7 +42,9 @@ public class AddInventory extends Fragment {
     private Uri mImageUri = null;
     private DatabaseReference mdatabaseRef;
     private StorageReference mStorage;
-    String imageurl;
+    private FirebaseAuth mAuth;
+    FirebaseUser user;
+    String imageurl,userid;
     int x;
 
 
@@ -59,6 +63,9 @@ public class AddInventory extends Fragment {
         user_image = (ImageView) getView().findViewById(R.id.user_image);
         etName = (TextView)getView().findViewById(R.id.etName);
         etQuant = (TextView)getView().findViewById(R.id.etQuant);
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        userid = user.getUid().toString();
 
 
 
@@ -142,7 +149,15 @@ public class AddInventory extends Fragment {
             Firebase newRef = mRoofRef.push();
             newRef.setValue(data);
             Toast.makeText(getContext(), "Updated Info", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getContext(), Homepage.class));
+
+            if(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")){
+                startActivity(new Intent(getContext(), AdminHomepage.class));
+            }
+
+            else{
+                startActivity(new Intent(getContext(), Homepage.class));
+            }
+
         }
 
     }

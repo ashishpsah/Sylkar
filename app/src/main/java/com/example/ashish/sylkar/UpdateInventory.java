@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,13 +33,18 @@ public class UpdateInventory extends Fragment {
 
     private RecyclerView recyclerView;
     private DatabaseReference myref;
-    static String UserTag;
+    static String UserTag,userid;
+    FirebaseAuth mAuth;
+    FirebaseUser user;
     FirebaseRecyclerAdapter<Inventory,ShowDataViewHolder> recyclerAdapter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle b)
     {
         View view=inflater.inflate(R.layout.main,group,false);
         getActivity().setTitle("Update Inventory");
+        mAuth= FirebaseAuth.getInstance();
+        user =mAuth.getCurrentUser();
+        userid = user.getUid().toString();
         recyclerView=(RecyclerView)view.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -56,35 +63,73 @@ public class UpdateInventory extends Fragment {
 
                     @Override
                     public void onClick(final View v) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setMessage("What you want to do with this item?").setCancelable(false)
-                                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        int selectedItems = position;
+                        if(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setMessage("What you want to do with this item?").setCancelable(true)
+                                    .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            int selectedItems = position;
 
-                                        UserTag = recyclerAdapter.getRef(selectedItems).getKey();
-                                        startActivity(new Intent(getContext(), InvenDataUpdate.class));
+                                            UserTag = recyclerAdapter.getRef(selectedItems).getKey();
+                                            startActivity(new Intent(getContext(), InvenDataUpdate.class));
 
 
+                                        }
+                                    })
+                                    .setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                            builder.setMessage("Do you want to Delete this data ?").setCancelable(false)
+                                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            int selectedItems = position;
+                                                            recyclerAdapter.getRef(selectedItems).removeValue();
+                                                            recyclerAdapter.notifyItemRemoved(selectedItems);
+                                                            recyclerView.invalidate();
+                                                            onStart();
+                                                        }
+                                                    })
+                                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                            AlertDialog dialog2 = builder.create();
+                                            dialog2.setTitle("Confirm");
+                                            dialog2.show();
+                                        }
+                                    });
+                            AlertDialog dialog1 = builder.create();
+                            dialog1.setTitle("Confirm");
+                            //dialog.setCanceledOnTouchOutside(true);
+                            dialog1.show();
+                        }
+                        else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setMessage("Do you want to Update this data ?").setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            int selectedItems = position;
 
-                                    }
-                                })
-                                .setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        int selectedItems = position;
-                                        recyclerAdapter.getRef(selectedItems).removeValue();
-                                        recyclerAdapter.notifyItemRemoved(selectedItems);
-                                        recyclerView.invalidate();
-                                        onStart();
-                                        startActivity(new Intent(getContext(), Homepage.class));
-                                        Toast.makeText(getContext(), "Item Deleted!!!", Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                        AlertDialog dialog = builder.create();
-                        dialog.setTitle("Confirm");
-                        dialog.show();
+                                            UserTag = recyclerAdapter.getRef(selectedItems).getKey();
+                                            startActivity(new Intent(getContext(), InvenDataUpdate.class));
+                                        }
+                                    })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                            AlertDialog dialog = builder.create();
+                            dialog.setTitle("Confirm");
+                            dialog.show();
+                        }
                     }
                 });
 

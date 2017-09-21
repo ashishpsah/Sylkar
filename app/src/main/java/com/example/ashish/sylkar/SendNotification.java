@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,11 +29,10 @@ public class SendNotification extends AppCompatActivity {
     private EditText editTextNotify;
     FirebaseAuth mAuth;
     FirebaseUser user;
-    private DatabaseReference mFirebaseDatabase;
     String Current,message,userid;
     static String username;
-    FirebaseDatabase database;
-    DatabaseReference myRef;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     final MyColleagueFragment model =new MyColleagueFragment();
     private static final String TAG= SendNotification.class.getSimpleName();
@@ -48,8 +48,13 @@ public class SendNotification extends AppCompatActivity {
         user =mAuth.getCurrentUser();
         Current =  model.UserTag;
         userid = user.getUid().toString();
-        database = FirebaseDatabase.getInstance();
+        if(getSupportActionBar() != null){
 
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+        database = FirebaseDatabase.getInstance();
+        //get username from database
         myRef = database.getReference();
         myRef.child("Users").child(userid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -80,19 +85,37 @@ public class SendNotification extends AppCompatActivity {
         buttonNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Read from the database
+                final String Sender = user.getUid().toString();
 
 
 
-                Toast.makeText(getApplicationContext(), "Notification Sent" , Toast.LENGTH_SHORT).show();
-                sendNotification();
-                startActivity(new Intent(SendNotification.this, Homepage.class));
+                   Toast.makeText(getApplicationContext(), "Notification Sent", Toast.LENGTH_SHORT).show();
+                    sendNotification();
+
+                if(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")){
+                    startActivity(new Intent(SendNotification.this, AdminHomepage.class));
+                }
+
+                else{
+                    startActivity(new Intent(SendNotification.this, Homepage.class));
+                }
+
 
 
 
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home)
+        {
+            finish();
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -104,7 +127,7 @@ public class SendNotification extends AppCompatActivity {
    private void sendNotification()
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String Sender = user.getEmail();
+
 
         AsyncTask.execute(new Runnable() {
             @Override

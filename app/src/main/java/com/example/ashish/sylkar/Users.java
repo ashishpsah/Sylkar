@@ -11,6 +11,7 @@ public class Users {
     String etIBAN;
     String etJob;
     String imageurl;
+
     public Users()
     {
 
@@ -25,12 +26,6 @@ public class Users {
         this.etJob =etJob;
         this.imageurl = imageurl;
 
-    }
-    //check this constructor
-    public Users( String imageurl){
-
-
-        this.imageurl = imageurl;
     }
 
     public String getEtTitle() {

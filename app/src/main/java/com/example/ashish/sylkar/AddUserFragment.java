@@ -23,7 +23,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -49,6 +48,7 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Add Colleague");
         buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
         editTextEmail = (EditText) getView().findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) getView().findViewById(R.id.editTextPassword);
@@ -82,7 +82,7 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             Toast.makeText(getContext(), "User with "+email +" created successfully", Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = mAuth.getCurrentUser();
+
                             startActivity(new Intent(getContext(), AdminHomepage.class));
 
                         } else {

@@ -10,7 +10,7 @@
         <item
             android:id="@+id/coll"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="My Colleagues" />
+            android:title="My Gang" />
         <item
             android:id="@+id/inventory"
             android:icon="@drawable/ic_menu_gallery"

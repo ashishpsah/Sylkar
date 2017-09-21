@@ -1,9 +1,9 @@
 package com.example.ashish.sylkar;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -14,18 +14,34 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class AdminHomepage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth mAuth;
     FirebaseUser user;
+    String userid,username,dp;
+    ImageView userimage;
+    TextView name,email;
+    DatabaseReference myRef;
+    private Firebase mRoofRef;
+    FirebaseDatabase database;
+    static int count = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,20 +51,15 @@ public class AdminHomepage extends AppCompatActivity
         setSupportActionBar(toolbar);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        userid = user.getUid().toString();
+        database = FirebaseDatabase.getInstance();
+
+        myRef = database.getReference();
+        set_nav_header();
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AddUserFragment addUserFragment = new AddUserFragment();
-                FragmentManager manager = getSupportFragmentManager();
-                manager.beginTransaction().replace(
-                        R.id.relativelayout_for_fragment,
-                        addUserFragment).commit();
 
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,26 +71,70 @@ public class AdminHomepage extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+
+
     public void set_nav_header(){
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            // No user is signed in do nothing
-            return;
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        userid = user.getUid().toString();
 
 
-        } else {
+
             // User logged in
+            //
+            //email.setText("HI ALL");
+
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
             navigationView.setNavigationItemSelectedListener(this);
             View header=navigationView.getHeaderView(0);
-            TextView name = (TextView)header.findViewById(R.id.name);
-            TextView email = (TextView)header.findViewById(R.id.email);
+/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+            name = (TextView)header.findViewById(R.id.name);
+            email = (TextView)header.findViewById(R.id.email);
+            userimage = (ImageView)header.findViewById(R.id.imageView);
             String emailAddress = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-            name.setText("ASHISH");
+            user = mAuth.getCurrentUser();
+            userid = user.getUid().toString();
+            mRoofRef = new Firebase("https://sylkar-4cbdc.firebaseio.com/").child("Users");
+            // Read from the database
+            myRef.child("Users").child(userid).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            try {
+                                Users users = dataSnapshot.getValue(Users.class);
+
+                                username = users.etTitle; // "John Doe"
+                                dp = users.imageurl.toString();
+                                name.setText(username);
+                                name.setTextColor(Color.parseColor("#000000"));
+                                //Toast.makeText(Homepage.this,dp, Toast.LENGTH_LONG).show();
+                                //if(!(TextUtils.isEmpty(dp)))
+                                Picasso.with(AdminHomepage.this).load(dp).into(userimage);
+                            }
+                            catch (Exception e) {
+                                Toast.makeText(AdminHomepage.this,
+                                        "Please add your data from Edit Profile menu",
+                                        Toast.LENGTH_LONG).show();
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
             email.setText(emailAddress.toString());
+            email.setTextColor(Color.parseColor("#000000"));
         }
 
-    }
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -163,14 +218,44 @@ public class AdminHomepage extends AppCompatActivity
                     R.id.relativelayout_for_fragment,
                     homeFragment).commit();
 
-        } else if (id == R.id.createschedule) {
+        }  else if (id == R.id.mycoll) {
+            MyColleagueFragment myColleagueFragment = new MyColleagueFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    myColleagueFragment).commit();
 
-        } else if (id == R.id.eagaleye) {
+        }
+        else if (id == R.id.gdetails) {
+            MyColleagueFragment myColleagueFragment = new MyColleagueFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    myColleagueFragment).commit();
+            count =1;
 
-        } else if (id == R.id.handleissues) {
 
-        } else if (id == R.id.mycoll) {
-            startActivity(new Intent(this, ShowData.class));
+        }
+        else if (id == R.id.addcoll) {
+            AddUserFragment addUserFragment = new AddUserFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    addUserFragment).commit();
+
+        } else if (id == R.id.addinventory) {
+            AddInventory addInventory = new AddInventory();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    addInventory).commit();
+
+        } else if (id == R.id.updateinventory) {
+            UpdateInventory updateInventory = new UpdateInventory();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    updateInventory).commit();
 
         } else if (id == R.id.admineditprofile) {
             EditProfileFragment editProfileFragment = new EditProfileFragment();
@@ -179,12 +264,7 @@ public class AdminHomepage extends AppCompatActivity
                     R.id.relativelayout_for_fragment,
                     editProfileFragment).commit();
 
-        }
-        else if (id == R.id.delete) {
-            startActivity(new Intent(this, ShowData.class));
-
-        }
-        else if (id == R.id.logout) {
+        } else if (id == R.id.logout) {
             finish();
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, LoginActivity.class));

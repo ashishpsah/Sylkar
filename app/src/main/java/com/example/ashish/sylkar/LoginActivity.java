@@ -114,8 +114,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     String User_id = user.getUid();
                                     //set user tag
                                     OneSignal.sendTag("User_ID", User_id);
-                                    startActivity(new Intent(LoginActivity.this, Homepage.class));
                                     Toast.makeText(LoginActivity.this, "Welcome " + email + ".", Toast.LENGTH_SHORT).show();
+                                    if(User_id.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3"))
+                                        startActivity(new Intent(LoginActivity.this, AdminHomepage.class));
+                                    else
+                                        startActivity(new Intent(LoginActivity.this, Homepage.class));
+
                                 }
                             }
                         }

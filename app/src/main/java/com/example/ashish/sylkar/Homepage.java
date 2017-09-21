@@ -36,7 +36,7 @@ public class Homepage extends AppCompatActivity
     private FirebaseAuth mAuth;
     FirebaseUser user;
     private Firebase mRoofRef;
-    String currentuser,username=null,dp=null;
+    String userid,username=null,dp=null;
     FirebaseDatabase database;
     DatabaseReference myRef;
     public static final String TAG = "Sylkar login logs";
@@ -54,6 +54,7 @@ public class Homepage extends AppCompatActivity
         setContentView(R.layout.activity_homepage);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        userid = user.getUid().toString();
         database = FirebaseDatabase.getInstance();
 
         myRef = database.getReference();
@@ -78,16 +79,11 @@ public class Homepage extends AppCompatActivity
     }
 
     public void set_nav_header(){
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            // No user is signed in do nothing
-            return;
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        userid = user.getUid().toString();
 
 
-        } else {
-            // User logged in
-            //
-            //email.setText("HI ALL");
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -99,10 +95,10 @@ public class Homepage extends AppCompatActivity
             userimage = (ImageView)header.findViewById(R.id.imageView);
             String emailAddress = FirebaseAuth.getInstance().getCurrentUser().getEmail();
             user = mAuth.getCurrentUser();
-            currentuser = user.getUid().toString();
+            userid = user.getUid().toString();
             mRoofRef = new Firebase("https://sylkar-4cbdc.firebaseio.com/").child("Users");
             // Read from the database
-            myRef.child("Users").child(currentuser).addListenerForSingleValueEvent(
+            myRef.child("Users").child(userid).addListenerForSingleValueEvent(
                     new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -137,7 +133,7 @@ public class Homepage extends AppCompatActivity
             email.setTextColor(Color.parseColor("#000000"));
         }
 
-    }
+
 
     @Override
     public void onBackPressed() {
@@ -227,13 +223,8 @@ public class Homepage extends AppCompatActivity
                     homeFragment).commit();
 
         }
-        /*else if (id == R.id.schedule) {
-            startActivity(new Intent(this, InvenDataView.class));
+        else if (id == R.id.coll) {
 
-
-
-        }*/ else if (id == R.id.coll) {
-            //startActivity(new Intent(this, ShowData.class));
             MyColleagueFragment myColleagueFragment = new MyColleagueFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(

@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_send_notification"
+    android:id="@+id/inven_item_update"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.ashish.sylkar.SendNotification">
+    android:background="@color/white"
+    tools:context="com.example.ashish.sylkar.UpdateEmail">
 
-    <Button
-        android:text="Send"
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        app:srcCompat="@drawable/main_logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="273dp"
-        android:id="@+id/buttonNotify" />
+        android:id="@+id/imageView3" />
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:inputType="textMultiLine"
-        android:ems="10"
-        android:layout_alignBottom="@+id/buttonNotify"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="105dp"
-        android:id="@+id/editTextNotify" />
+        android:hint="Enter message"
+        android:id="@+id/editTextNotify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/imageView3"
+
+        android:layout_marginTop="35dp" />
+
+    <Button
+        android:text="Notify"
+        android:id="@+id/buttonNotify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="52dp"
+        android:layout_below="@+id/editTextNotify"
+        />
+
 
 </RelativeLayout>

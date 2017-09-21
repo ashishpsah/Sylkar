@@ -23,7 +23,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Home");
+        getActivity().setTitle("Home ");
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
