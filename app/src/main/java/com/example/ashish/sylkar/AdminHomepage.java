@@ -219,11 +219,13 @@ public class AdminHomepage extends AppCompatActivity
                     homeFragment).commit();
 
         }  else if (id == R.id.mycoll) {
+            count = 0;
             MyColleagueFragment myColleagueFragment = new MyColleagueFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(
                     R.id.relativelayout_for_fragment,
                     myColleagueFragment).commit();
+
 
         }
         else if (id == R.id.gdetails) {
@@ -242,6 +244,7 @@ public class AdminHomepage extends AppCompatActivity
             manager.beginTransaction().replace(
                     R.id.relativelayout_for_fragment,
                     addUserFragment).commit();
+            count =0;
 
         } else if (id == R.id.addinventory) {
             AddInventory addInventory = new AddInventory();
@@ -249,6 +252,7 @@ public class AdminHomepage extends AppCompatActivity
             manager.beginTransaction().replace(
                     R.id.relativelayout_for_fragment,
                     addInventory).commit();
+            count = 0;
 
         } else if (id == R.id.updateinventory) {
             UpdateInventory updateInventory = new UpdateInventory();
@@ -263,8 +267,18 @@ public class AdminHomepage extends AppCompatActivity
             manager.beginTransaction().replace(
                     R.id.relativelayout_for_fragment,
                     editProfileFragment).commit();
+            count = 0;
 
-        } else if (id == R.id.logout) {
+        }
+        else if (id == R.id.delcoll) {
+            MyColleagueFragment myColleagueFragment = new MyColleagueFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    myColleagueFragment).commit();
+            count = 2;
+
+        }else if (id == R.id.logout) {
             finish();
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, LoginActivity.class));

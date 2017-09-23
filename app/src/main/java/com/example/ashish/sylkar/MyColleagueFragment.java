@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -99,7 +100,7 @@ public class MyColleagueFragment extends Fragment {
                     public void onClick(final View v) {
                         UserTag = recyclerAdapter.getRef(position).getKey();
                         //User want to delete his profile and he is not admin
-                        if((userid.equals(UserTag) && !(UserTag.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")))){
+                        if((userid.equals(UserTag) && !(UserTag.equals("yvprnDUyyOTijsHOQmpg6a11luA3")))){
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                             builder.setMessage("Are you sure you want to delete your pofile?").setCancelable(false)
                                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -129,7 +130,7 @@ public class MyColleagueFragment extends Fragment {
 
                         }
                         //User wants to send notification and he is not admin
-                        else if (!(userid.equals(UserTag)) && !(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3"))) {
+                        else if (!(userid.equals(UserTag)) && !(userid.equals("yvprnDUyyOTijsHOQmpg6a11luA3"))) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                             builder.setMessage("Do you want to send Notification?").setCancelable(false)
                                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -157,9 +158,24 @@ public class MyColleagueFragment extends Fragment {
 
                         }
                         //if user is admin
-                        else if(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")) {
+                        else if(userid.equals("yvprnDUyyOTijsHOQmpg6a11luA3")) {
                             AdminHomepage adminHomepage = new AdminHomepage();
-                            if (adminHomepage.count == 1) {
+                            if(adminHomepage.count == 2){
+
+                                if(UserTag.equals("yvprnDUyyOTijsHOQmpg6a11luA3"))
+                                {
+                                    Toast.makeText(getContext(), "You cannot Delete yourself", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    adminHomepage.count = 0;
+                                    DelAccount delAccount = new DelAccount();
+                                    FragmentManager manager = getFragmentManager();
+                                    manager.beginTransaction().replace(
+                                            R.id.relativelayout_for_fragment,
+                                            delAccount).commit();
+                                }
+                            }
+                            else if (adminHomepage.count == 1) {
                                 adminHomepage.count = 0;
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                                 builder.setMessage("Do you want to see detais?").setCancelable(false)
@@ -186,7 +202,7 @@ public class MyColleagueFragment extends Fragment {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 //Admin cannot send notification to itself
-                                                if (UserTag.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")) {
+                                                if (UserTag.equals("yvprnDUyyOTijsHOQmpg6a11luA3")) {
                                                     Toast.makeText(getContext(), "You cannot send Notification to yourself", Toast.LENGTH_SHORT).show();
 
                                                 } else {

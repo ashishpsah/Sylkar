@@ -2,11 +2,11 @@ package com.example.ashish.sylkar;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,7 +83,11 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
                             Log.d(TAG, "createUserWithEmail:success");
                             Toast.makeText(getContext(), "User with "+email +" created successfully", Toast.LENGTH_SHORT).show();
 
-                            startActivity(new Intent(getContext(), AdminHomepage.class));
+                            HomeFragment homeFragment = new HomeFragment();
+                            FragmentManager manager = getFragmentManager();
+                            manager.beginTransaction().replace(
+                                    R.id.relativelayout_for_fragment,
+                                    homeFragment).commit();
 
                         } else {
                             // If sign in fails, display a message to the user.

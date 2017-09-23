@@ -150,7 +150,7 @@ public class AddInventory extends Fragment {
             newRef.setValue(data);
             Toast.makeText(getContext(), "Updated Info", Toast.LENGTH_LONG).show();
 
-            if(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")){
+            if(userid.equals("yvprnDUyyOTijsHOQmpg6a11luA3")){
                 startActivity(new Intent(getContext(), AdminHomepage.class));
             }
 

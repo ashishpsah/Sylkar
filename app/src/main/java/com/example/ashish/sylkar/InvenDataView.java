@@ -79,7 +79,7 @@ public class InvenDataView extends AppCompatActivity {
             public void populateViewHolder(final InvenDataView.ShowDataViewHolder viewHolder, InventoryData model, final int position) {
                 viewHolder.imageurl(model.getImageurl());
                 viewHolder.name(model.getEtTitle()+":- "+ model.getEtQuant()+" Left");
-                if(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")){
+                if(userid.equals("yvprnDUyyOTijsHOQmpg6a11luA3")){
                     viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 
                         @Override

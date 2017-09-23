@@ -256,6 +256,13 @@ public class Homepage extends AppCompatActivity
                     R.id.relativelayout_for_fragment,
                     editProfileFragment).commit();
 
+        } else if (id == R.id.delacc) {
+            DelAccount delAccount = new DelAccount();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    delAccount).commit();
+
         } else if (id == R.id.sign_out) {
             finish();
             FirebaseAuth.getInstance().signOut();

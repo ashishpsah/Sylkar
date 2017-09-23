@@ -92,7 +92,7 @@ public class SendNotification extends AppCompatActivity {
                    Toast.makeText(getApplicationContext(), "Notification Sent", Toast.LENGTH_SHORT).show();
                     sendNotification();
 
-                if(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")){
+                if(userid.equals("yvprnDUyyOTijsHOQmpg6a11luA3")){
                     startActivity(new Intent(SendNotification.this, AdminHomepage.class));
                 }
 
@@ -138,7 +138,7 @@ public class SendNotification extends AppCompatActivity {
                             .permitAll().build();
                     StrictMode.setThreadPolicy(policy);
 
-                    message = username +" SAYS:" +
+                    message = "Message from " +username  + ":-"+
                             System.lineSeparator() + editTextNotify.getText().toString();
 
 

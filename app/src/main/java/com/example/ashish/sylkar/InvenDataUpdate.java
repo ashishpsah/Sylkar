@@ -70,7 +70,7 @@ public class InvenDataUpdate extends AppCompatActivity implements View.OnClickLi
                 mRoofRef.child(Key).child("etQuant").setValue(Quant);
                 Toast.makeText(getApplicationContext(), "INVENTORY UPDATED", Toast.LENGTH_LONG).show();
 
-                if(userid.equals("YmFDwtw9ncMTaZyXTKQkqTpCutG3")){
+                if(userid.equals("yvprnDUyyOTijsHOQmpg6a11luA3")){
                     startActivity(new Intent(InvenDataUpdate.this, AdminHomepage.class));
 
                 }
