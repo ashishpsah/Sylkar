@@ -20,6 +20,7 @@ public class logo extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE);   //code for immersive mode of display
 
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -27,6 +28,6 @@ public class logo extends AppCompatActivity {
                 logo.this.startActivity(mainIntent);
                 logo.this.finish();
             }
-        }, 1000);   //code for automatic transition of activity in 2 seconds
+        }, 1000);   //code for automatic transition of activity in 1 seconds
     }
 }

@@ -5,6 +5,7 @@ package com.example.ashish.sylkar;
  */
 
 public class InventoryData {
+
     public InventoryData() {
     }
     String etTitle,etQuant,imageurl;

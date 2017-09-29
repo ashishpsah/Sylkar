@@ -4,15 +4,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,23 +18,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link UpdateInventory.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link UpdateInventory#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class UpdateInventory extends Fragment {
 
+public class UpdateInventory extends Fragment {
     private RecyclerView recyclerView;
     private DatabaseReference myref;
     static String UserTag,userid;
     FirebaseAuth mAuth;
     FirebaseUser user;
     FirebaseRecyclerAdapter<Inventory,ShowDataViewHolder> recyclerAdapter;
-
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle b)
     {
         View view=inflater.inflate(R.layout.main,group,false);
@@ -70,11 +58,8 @@ public class UpdateInventory extends Fragment {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             int selectedItems = position;
-
                                             UserTag = recyclerAdapter.getRef(selectedItems).getKey();
                                             startActivity(new Intent(getContext(), InvenDataUpdate.class));
-
-
                                         }
                                     })
                                     .setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
@@ -105,7 +90,6 @@ public class UpdateInventory extends Fragment {
                                     });
                             AlertDialog dialog1 = builder.create();
                             dialog1.setTitle("Confirm");
-                            //dialog.setCanceledOnTouchOutside(true);
                             dialog1.show();
                         }
                         else{
@@ -115,7 +99,6 @@ public class UpdateInventory extends Fragment {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             int selectedItems = position;
-
                                             UserTag = recyclerAdapter.getRef(selectedItems).getKey();
                                             startActivity(new Intent(getContext(), InvenDataUpdate.class));
                                         }
@@ -132,14 +115,9 @@ public class UpdateInventory extends Fragment {
                         }
                     }
                 });
-
             }
-
-
-
         };
         recyclerView.setAdapter(recyclerAdapter);
         return view;
     }
-
 }

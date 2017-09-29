@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -33,10 +36,9 @@ public class SendNotification extends AppCompatActivity {
     static String username;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-
+    private TextView name;
+    private ImageView dp;
     final MyColleagueFragment model =new MyColleagueFragment();
-    private static final String TAG= SendNotification.class.getSimpleName();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,6 @@ public class SendNotification extends AppCompatActivity {
         Current =  model.UserTag;
         userid = user.getUid().toString();
         if(getSupportActionBar() != null){
-
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -62,15 +63,34 @@ public class SendNotification extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         try {
                             Users users = dataSnapshot.getValue(Users.class);
-
-                            username = users.etTitle; // "John Doe"
-
+                            username = users.etTitle;
                         }
                         catch (Exception e) {
                             Toast.makeText(SendNotification.this,
                                     "Please add your data from Edit Profile menu",
                                     Toast.LENGTH_LONG).show();
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+        myRef.child("Users").child(model.UserTag).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        try {
+                            Users users = dataSnapshot.getValue(Users.class);
+                            name =(TextView)findViewById(R.id.fetch_image_title);
+                            name.setText(users.etTitle);
+                            dp = (ImageView)findViewById(R.id.fetch_image);
+                            Picasso.with(SendNotification.this)
+                                    .load(users.getImageurl())
+                                    .into(dp);
+                        }
+                        catch (Exception e) {
 
                         }
                     }
@@ -81,14 +101,10 @@ public class SendNotification extends AppCompatActivity {
                     }
                 });
 
-
         buttonNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String Sender = user.getUid().toString();
-
-
-
                    Toast.makeText(getApplicationContext(), "Notification Sent", Toast.LENGTH_SHORT).show();
                     sendNotification();
 
@@ -99,10 +115,6 @@ public class SendNotification extends AppCompatActivity {
                 else{
                     startActivity(new Intent(SendNotification.this, Homepage.class));
                 }
-
-
-
-
             }
         });
 
@@ -113,22 +125,13 @@ public class SendNotification extends AppCompatActivity {
         if(item.getItemId()==android.R.id.home)
         {
             finish();
-
         }
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
-
-
-
    private void sendNotification()
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -137,51 +140,31 @@ public class SendNotification extends AppCompatActivity {
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                             .permitAll().build();
                     StrictMode.setThreadPolicy(policy);
-
                     message = "Message from " +username  + ":-"+
                             System.lineSeparator() + editTextNotify.getText().toString();
-
-
-                   /* if (Current.equals("carstenwulff@gmail.com")) {
-                        send_email = "harishcarbon@gmail.com";
-                    } else {
-                        send_email = "carstenwulff@gmail.com";
-                    }*/
-
                     try {
                         String jsonResponse;
-
                         URL url = new URL("https://onesignal.com/api/v1/notifications");
                         HttpURLConnection con = (HttpURLConnection) url.openConnection();
                         con.setUseCaches(false);
                         con.setDoOutput(true);
                         con.setDoInput(true);
-
                         con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                         con.setRequestProperty("Authorization", "Basic MjRjMDQ2ZDctNWE2Ny00ZDVmLWI3ZmMtZGMzNTU5ODE2YTM2");
                         con.setRequestMethod("POST");
-
                         String strJsonBody = "{"
                                 + "\"app_id\": \"0bd2c3a8-c151-4bb8-b144-1374e1f6127f\","
-
                                 + "\"filters\": [{\"field\": \"tag\", \"key\": \"User_ID\", \"relation\": \"=\", \"value\": \"" + Current + "\"}],"
-
                                 + "\"data\": {\"foo\": \"bar\"},"
                                 + "\"contents\": {\"en\":\"" + message + "\"}"
                                 + "}";
-
-
                         System.out.println("strJsonBody:\n" + strJsonBody);
-
                         byte[] sendBytes = strJsonBody.getBytes("UTF-8");
                         con.setFixedLengthStreamingMode(sendBytes.length);
-
                         OutputStream outputStream = con.getOutputStream();
                         outputStream.write(sendBytes);
-
                         int httpResponse = con.getResponseCode();
                         System.out.println("httpResponse: " + httpResponse);
-
                         if (httpResponse >= HttpURLConnection.HTTP_OK
                                 && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST) {
                             Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");

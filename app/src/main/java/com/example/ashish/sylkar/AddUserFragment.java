@@ -1,12 +1,11 @@
 package com.example.ashish.sylkar;
 
 
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,8 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 
 /**
@@ -34,11 +31,8 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
     private Button buttonRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
-    private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
-    private DatabaseReference databaseUsers;
     public static final String TAG = "Sylkar Add user logs";
-
 
 
     public AddUserFragment() {
@@ -52,20 +46,17 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
         buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
         editTextEmail = (EditText) getView().findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) getView().findViewById(R.id.editTextPassword);
-        databaseUsers = FirebaseDatabase.getInstance().getReference();
         buttonRegister.setOnClickListener((new View.OnClickListener(){
 
 
             @Override
             public void onClick(View v) {
-                createAccount(editTextEmail.getText().toString().toLowerCase(), editTextPassword.getText().toString());
-
-
+                createAccount(editTextEmail.getText().toString().toLowerCase(),
+                        editTextPassword.getText().toString());
             }
         }));
         mAuth = FirebaseAuth.getInstance();
     }
-
     private void createAccount(final String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
@@ -73,7 +64,6 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
             return;
         }
 
-        // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                     @Override
@@ -81,14 +71,12 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            Toast.makeText(getContext(), "User with "+email +" created successfully", Toast.LENGTH_SHORT).show();
-
-                            HomeFragment homeFragment = new HomeFragment();
-                            FragmentManager manager = getFragmentManager();
-                            manager.beginTransaction().replace(
-                                    R.id.relativelayout_for_fragment,
-                                    homeFragment).commit();
-
+                            Toast.makeText(getContext(), "User with "+email +
+                                    " created successfully. Please Login again",
+                                    Toast.LENGTH_SHORT).show();
+                            getActivity().finish();
+                            FirebaseAuth.getInstance().signOut();
+                            startActivity(new Intent(getContext(), LoginActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             try
@@ -98,7 +86,8 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
                             // if user enters wrong email.
                             catch (FirebaseAuthWeakPasswordException weakPassword)
                             {
-                                Toast.makeText(getContext(), "Weak Password Choose a strong one", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Weak Password Choose a strong one",
+                                        Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "onComplete: weak_password");
 
 
@@ -108,14 +97,16 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
                             catch (FirebaseAuthInvalidCredentialsException malformedEmail)
                             {
                                 Log.d(TAG, "onComplete: malformed_email");
-                                Toast.makeText(getContext(), "Enter Valid email id", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Enter Valid email id",
+                                        Toast.LENGTH_SHORT).show();
 
                                 // TODO: Take your action
                             }
                             catch (FirebaseAuthUserCollisionException existEmail)
                             {
                                 Log.d(TAG, "onComplete: exist_email");
-                                Toast.makeText(getContext(), "User already exists", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "User already exists",
+                                        Toast.LENGTH_SHORT).show();
 
                                 // TODO: Take your action
                             }
@@ -123,22 +114,14 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
                             {
                                 Log.d(TAG, "onComplete: " + e.getMessage());
                             }
-
-
                         }
-
-
                     }
                 });
-// [END create_user_with_email]
     }
 
-
-
-
+    //method to validate the filled form
     private boolean validateForm() {
         boolean valid = true;
-
         String email = editTextEmail.getText().toString();
         if (TextUtils.isEmpty(email)) {
             editTextEmail.setError("Email Required.");
@@ -148,22 +131,18 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
         } else {
             editTextEmail.setError(null);
         }
-
         String password = editTextPassword.getText().toString();
         if (password.length()<6) {
             editTextPassword.setError("Valid Password Required.");
             editTextPassword.setHint("Please enter valid password");
-            Toast.makeText(getContext(), "Choose strong password (Atleast 6 Characters)", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Choose strong password (Atleast 6 Characters)",
+                    Toast.LENGTH_LONG).show();
             valid = false;
         } else {
             editTextPassword.setError(null);
         }
-
         return valid;
     }
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,17 +43,13 @@ public class DelAccount extends Fragment {
     FirebaseUser user;
     private DatabaseReference myref;
     private FirebaseDatabase database;
-    private RecyclerView recyclerView;
     FirebaseRecyclerAdapter<Users, ShowGangMember> recyclerAdapter;
-    static String userid,uniqueid,uuid;
+    static String userid,uniqueid;
     private TextView name;
     private EditText email,password;
     private Button delete;
     private ImageView dp;
     int count;
-
-
-
     public DelAccount() {
         // Required empty public constructor
     }
@@ -83,7 +78,6 @@ public class DelAccount extends Fragment {
         else {
             uniqueid = userid.toString();
         }
-
         myref.child("Users").child(uniqueid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -97,14 +91,10 @@ public class DelAccount extends Fragment {
                             Picasso.with(getContext())
                                     .load(users.getImageurl())
                                     .into(dp);
-
-
-
                         }
                         catch (Exception e) {
 
                         }
-
                     }
 
                     @Override
@@ -116,35 +106,26 @@ public class DelAccount extends Fragment {
             @Override
             public void onClick(View v)
             {
-                String e =email.getText().toString().toLowerCase(),p=password.getText().toString();
+                String emailid =email.getText().toString().toLowerCase(),
+                        pass=password.getText().toString();
 
                 if(userid.equals("yvprnDUyyOTijsHOQmpg6a11luA3"))
                 {
-
-                    FirebaseAuth.getInstance().signOut();
-                    DeleteAccount(e,p);
+                    DeleteAccount(emailid,pass);
 
                 }
                 else {
-                    DeleteMyAccount(e,p);
-
+                    accountDelete(emailid,pass);
                 }
             }
         });
-
-
-
-
     }
 
-    private void DeleteMyAccount(final String email, final String password){
+    private void accountDelete(final String email, final String password){
         if (!validateForm()) {
-
             return;
         }
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-
         AuthCredential credential = EmailAuthProvider
                 .getCredential(email,password);
         user.reauthenticate(credential)
@@ -157,28 +138,33 @@ public class DelAccount extends Fragment {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Toast.makeText(getContext(), "Successfully deleted", Toast.LENGTH_SHORT).show();
-                                                FirebaseAuth.getInstance().signOut();
+                                                Toast.makeText(getContext(),
+                                                        "Successfully deleted",
+                                                        Toast.LENGTH_SHORT).show();
                                                 getActivity().finish();
-
-
+                                                FirebaseAuth.getInstance().signOut();
+                                                DatabaseReference db_node =
+                                                        FirebaseDatabase.getInstance()
+                                                                .getReference()
+                                                                .getRoot()
+                                                                .child("Users").child(uniqueid);
+                                                db_node.setValue(null);
+                                                startActivity(new Intent(getContext(),
+                                                        LoginActivity.class));
                                             }
                                         }
                                     });
                         }
                         else{
-                            Toast.makeText(getContext(), "Invalid user details...Try again", Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(getContext(), "Wrong credentials",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
     }
 
     private void DeleteAccount(final String email, final String password) {
-
         if (!validateForm()) {
-
             return;
         }
         mAuth.signInWithEmailAndPassword(email, password)
@@ -190,7 +176,8 @@ public class DelAccount extends Fragment {
                                     emailValidation(email);
                                     if(count == 1) {
                                         Toast.makeText(getContext(), email +
-                                                " is not a valid email address", Toast.LENGTH_SHORT).show();
+                                                " is not a valid email address",
+                                                Toast.LENGTH_SHORT).show();
                                     }
                                     else {
 
@@ -202,25 +189,21 @@ public class DelAccount extends Fragment {
 
                                             Toast.makeText(getContext(), "User with " + email +
                                                     " does not exists", Toast.LENGTH_SHORT).show();
-
-                                            // TODO: take your actions!
                                         }
                                         // if user enters wrong password.
-                                        catch (FirebaseAuthInvalidCredentialsException wrongPassword) {
-
-
-                                            Toast.makeText(getContext(), "Incorrect Password for " + email +
-                                                    ". Please enter correct password", Toast.LENGTH_SHORT).show();
-
-
-                                            // TODO: Take your action
+                                        catch (FirebaseAuthInvalidCredentialsException wrongPassword)
+                                        {
+                                            Toast.makeText(getContext(), "Incorrect Password for "
+                                                    + email + ". Please enter correct password",
+                                                    Toast.LENGTH_SHORT).show();
                                         } catch (Exception e) {
-
 
                                         }
                                     }
-                                } else {
-                                    final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                }
+                                else {
+                                    final FirebaseUser user = FirebaseAuth.getInstance()
+                                            .getCurrentUser();
                                     AuthCredential credential = EmailAuthProvider
                                             .getCredential(email,password);
                                     user.reauthenticate(credential)
@@ -255,9 +238,6 @@ public class DelAccount extends Fragment {
                                     database = FirebaseDatabase.getInstance();
                                     myref = database.getReference("Users")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-
-
                                 }
                             }
                         }
@@ -289,9 +269,6 @@ public class DelAccount extends Fragment {
         return valid;
     }
 
-
-
-
     //Method for Email Validation
     private void emailValidation(String checkemail)
     {
@@ -306,13 +283,9 @@ public class DelAccount extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_del_account, container, false);
     }

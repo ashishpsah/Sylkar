@@ -27,21 +27,17 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".Dashboard" />
-        <activity android:name=".ColleagueDashboard" />
         <activity
             android:name=".Homepage"
-            android:label="@string/title_activity_homepage"
+            android:label="Home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AdminHomepage"
             android:label="Home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ShowColleague" />
-        <activity android:name=".UploadInfo" />
         <activity android:name=".ForgotPasswod" />
         <activity android:name=".ForgotPassword" />
-        <activity android:name=".ShowData" />
         <activity
             android:name=".UpdateEmail"
             android:label="Update Email" />
@@ -53,7 +49,6 @@
             android:name=".Inventory"
             android:label="@string/title_activity_inventory"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".InvenDataView" />
         <activity
             android:name=".InvenDataUpdate"
             android:label="Update Inventory" />

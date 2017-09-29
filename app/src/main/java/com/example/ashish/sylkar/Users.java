@@ -14,18 +14,16 @@ public class Users {
 
     public Users()
     {
-
+        //Default constructor required
     }
 
     public Users( String etTitle, String etAddress, String etPhone, String etIBAN, String etJob, String imageurl) {
-
         this.etTitle = etTitle;
         this.etAddress = etAddress;
         this.etPhone = etPhone;
         this.etIBAN = etIBAN;
         this.etJob =etJob;
         this.imageurl = imageurl;
-
     }
 
     public String getEtTitle() {

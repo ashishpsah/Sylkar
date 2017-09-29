@@ -240,7 +240,7 @@ public class Homepage extends AppCompatActivity
 
         }
         else if (id == R.id.updateInventory) {
-            //startActivity(new Intent(this, InvenDataView.class));
+
             UpdateInventory updateInventory = new UpdateInventory();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(

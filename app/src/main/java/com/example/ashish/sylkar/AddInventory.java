@@ -22,8 +22,6 @@ import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -38,16 +36,12 @@ public class AddInventory extends Fragment {
     public static final int READ_EXTERNAL_STORAGE = 0;
     private static final int GALLERY_INTENT = 2;
     private ProgressDialog mProgressDialog;
-    private Firebase mRoofRef,childRef_name;
+    private Firebase mRoofRef;
     private Uri mImageUri = null;
-    private DatabaseReference mdatabaseRef;
     private StorageReference mStorage;
     private FirebaseAuth mAuth;
     FirebaseUser user;
     String imageurl,userid;
-    int x;
-
-
 
     public AddInventory() {
         // Required empty public constructor
@@ -66,25 +60,23 @@ public class AddInventory extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         userid = user.getUid().toString();
-
-
-
         //Initialize the Progress Bar
         mProgressDialog = new ProgressDialog(getContext());
-
         //Select image from External Storage...
         select_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 //Check for Runtime Permission
-                if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                if (ContextCompat.checkSelfPermission(getContext(),
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED)
                 {
                     Toast.makeText(getContext(), "Call for Permission", Toast.LENGTH_SHORT).show();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                     {
-                        requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE);
+                        requestPermissions(new String[]{android.Manifest.permission
+                                .READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE);
                     }
                 }
                 else
@@ -94,33 +86,24 @@ public class AddInventory extends Fragment {
             }
         });
 
-        //Initialize Firebase Database paths for database and Storage
-
-        mdatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mRoofRef = new Firebase("https://sylkar-4cbdc.firebaseio.com/").child("Inventory");  // Push will create new child every time we upload data
-        mStorage = FirebaseStorage.getInstance().getReferenceFromUrl("gs://sylkar-4cbdc.appspot.com/");
-
+        //Firebase root reference
+        mRoofRef = new Firebase("https://sylkar-4cbdc.firebaseio.com/").child("Inventory");
+        //Firebase Storage reference
+        mStorage = FirebaseStorage.getInstance()
+                .getReferenceFromUrl("gs://sylkar-4cbdc.appspot.com/");
         //Click on Upload Button Title will upload to Database
         upload_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 addInventory();
 
             }
         });
-
-
-
-
-
-
-
-
     }
     //Check for Runtime Permissions for Storage Access
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case READ_EXTERNAL_STORAGE:
@@ -131,7 +114,7 @@ public class AddInventory extends Fragment {
         Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();
     }
 
-    //action on click event
+    //action on click event to add inventory
     private void addInventory()
     {
         String Name = etName.getText().toString().trim();
@@ -144,7 +127,6 @@ public class AddInventory extends Fragment {
         }
 
         else {
-            mdatabaseRef = FirebaseDatabase.getInstance().getReference();
             InventoryData data = new InventoryData(Name,Quant, imageurl);
             Firebase newRef = mRoofRef.push();
             newRef.setValue(data);
@@ -157,47 +139,36 @@ public class AddInventory extends Fragment {
             else{
                 startActivity(new Intent(getContext(), Homepage.class));
             }
-
         }
-
     }
-
-
-
     //If Access Granted gallery Will open
     private void callgalary() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, GALLERY_INTENT);
     }
-
-
     //After Selecting image from gallery image will directly uploaded to Firebase Database
     //and Image will Show in Image View
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
-
             mImageUri = data.getData();
             user_image.setImageURI(mImageUri);
-            StorageReference filePath = mStorage.child("Inventory_Images").child(mImageUri.getLastPathSegment());
+            StorageReference filePath = mStorage.child("Inventory_Images")
+                    .child(mImageUri.getLastPathSegment());
             mProgressDialog.setMessage("Uploading Image....");
             mProgressDialog.show();
-
             filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    Uri downloadUri = taskSnapshot.getDownloadUrl();  //Ignore This error
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
                     imageurl= downloadUri.toString();
                     mProgressDialog.dismiss();
                 }
             });
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

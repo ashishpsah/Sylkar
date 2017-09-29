@@ -23,26 +23,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class MyColleagueFragment extends Fragment {
-
-
     private RecyclerView recyclerView;
     FirebaseAuth mAuth;
     private DatabaseReference myref;
     private FirebaseDatabase database;
     static String UserTag,userid,username;
-
-
-
-
     FirebaseRecyclerAdapter<Users, ShowDataViewHolder> recyclerAdapter;
-
-
-
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle b) {
         View view = inflater.inflate(R.layout.main, group, false);
@@ -58,9 +46,7 @@ public class MyColleagueFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         try {
                             Users users = dataSnapshot.getValue(Users.class);
-
-                            username = users.etTitle; // "John Doe"
-
+                            username = users.etTitle;
                         }
                         catch (Exception e) {
 
@@ -72,13 +58,10 @@ public class MyColleagueFragment extends Fragment {
 
                     }
                 });
-
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         myref = FirebaseDatabase.getInstance().getReference().child("Users");
-
-
         recyclerAdapter = new FirebaseRecyclerAdapter<Users, ShowDataViewHolder>(
                 Users.class,
                 R.layout.show_data_single_item,
@@ -86,15 +69,11 @@ public class MyColleagueFragment extends Fragment {
                 myref
         ) {
 
-
             @Override
             protected void populateViewHolder(ShowDataViewHolder viewHolder, Users model, final int position) {
-
                     viewHolder.setEtTitle(model.getEtTitle());
                     viewHolder.setImageurl(model.getImageurl());
-
-
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(final View v) {
@@ -113,9 +92,6 @@ public class MyColleagueFragment extends Fragment {
                                             onStart();
                                             startActivity(new Intent(getContext(), Homepage.class));
                                             Toast.makeText(getContext(), "Successfully deleted profile!!!", Toast.LENGTH_SHORT).show();
-
-
-
                                         }
                                     })
                                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -127,7 +103,6 @@ public class MyColleagueFragment extends Fragment {
                             AlertDialog dialog2 = builder.create();
                             dialog2.setTitle("Confirm");
                             dialog2.show();
-
                         }
                         //User wants to send notification and he is not admin
                         else if (!(userid.equals(UserTag)) && !(userid.equals("yvprnDUyyOTijsHOQmpg6a11luA3"))) {
@@ -136,13 +111,6 @@ public class MyColleagueFragment extends Fragment {
                                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-
-
-                                            // Toast.makeText(getContext(), UserTag, Toast.LENGTH_LONG).show();
-                                            //int selectedItems = position;
-
-
-                                            // recyclerAdapter.notifyItemRemoved(selectedItems);
                                             startActivity(new Intent(getContext(), SendNotification.class));
                                         }
                                     })
@@ -155,13 +123,11 @@ public class MyColleagueFragment extends Fragment {
                             AlertDialog dialog = builder.create();
                             dialog.setTitle("Confirm");
                             dialog.show();
-
                         }
                         //if user is admin
                         else if(userid.equals("yvprnDUyyOTijsHOQmpg6a11luA3")) {
                             AdminHomepage adminHomepage = new AdminHomepage();
                             if(adminHomepage.count == 2){
-
                                 if(UserTag.equals("yvprnDUyyOTijsHOQmpg6a11luA3"))
                                 {
                                     Toast.makeText(getContext(), "You cannot Delete yourself", Toast.LENGTH_SHORT).show();
@@ -212,10 +178,6 @@ public class MyColleagueFragment extends Fragment {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialog, int which) {
 
-
-                                                                    //Toast.makeText(getContext(), UserTag, Toast.LENGTH_LONG).show();
-                                                                    //int selectedItems = position;
-                                                                    //recyclerAdapter.notifyItemRemoved(selectedItems);
                                                                     startActivity(new Intent(getContext(), SendNotification.class));
                                                                 }
                                                             })
@@ -244,11 +206,8 @@ public class MyColleagueFragment extends Fragment {
                                                                 recyclerAdapter.notifyItemRemoved(selectedItems);
                                                                 recyclerView.invalidate();
                                                                 onStart();
-
                                                                 startActivity(new Intent(getContext(), AdminHomepage.class));
                                                                 Toast.makeText(getContext(), "Successfully deleted profile!!!", Toast.LENGTH_SHORT).show();
-
-
                                                             }
                                                         })
                                                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -260,28 +219,20 @@ public class MyColleagueFragment extends Fragment {
                                                 AlertDialog dialog2 = builder.create();
                                                 dialog2.setTitle("Confirm");
                                                 dialog2.show();
-
                                             }
                                         });
                                 AlertDialog dialog1 = builder.create();
                                 dialog1.setTitle("Choose!!!");
                                 dialog1.show();
-
-
                             }
                         }
-
                     }
                 });
             }
-
         };
-
         recyclerView.setAdapter(recyclerAdapter);
         return view;
-
     }
-
 }
 
 

@@ -16,7 +16,6 @@ public class ShowGangMember extends RecyclerView.ViewHolder {
     private final ImageView imageView;
     View mView;
 
-
     public ShowGangMember(final View itemView) {
         super(itemView);
         mView = itemView;
@@ -40,8 +39,5 @@ public class ShowGangMember extends RecyclerView.ViewHolder {
         Picasso.with(mView.getContext())
                 .load(imageurl)
                 .into(imageView);
-
     }
-
-
 }

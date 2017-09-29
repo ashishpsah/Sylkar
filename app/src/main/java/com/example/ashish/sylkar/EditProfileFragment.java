@@ -42,16 +42,12 @@ public class EditProfileFragment extends Fragment {
     public static final int READ_EXTERNAL_STORAGE = 0;
     private static final int GALLERY_INTENT = 2;
     private ProgressDialog mProgressDialog;
-    private Firebase mRoofRef,childRef_name;
     private Uri mImageUri = null;
     private DatabaseReference mdatabaseRef;
     private StorageReference mStorage;
     String imageurl,userid;
     FirebaseAuth mAuth;
     FirebaseUser user;
-
-
-
     public EditProfileFragment() {
         // Required empty public constructor
     }
@@ -72,10 +68,8 @@ public class EditProfileFragment extends Fragment {
         mAuth= FirebaseAuth.getInstance();
         user =mAuth.getCurrentUser();
         userid = user.getUid().toString();
-
         //Initialize the Progress Bar
         mProgressDialog = new ProgressDialog(getContext());
-
         //Select image from External Storage...
         select_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,30 +93,15 @@ public class EditProfileFragment extends Fragment {
         });
 
         //Initialize Firebase Database paths for database and Storage
-
         mdatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mRoofRef = new Firebase("https://sylkar-4cbdc.firebaseio.com/").child("Users");  // Push will create new child every time we upload data
         mStorage = FirebaseStorage.getInstance().getReferenceFromUrl("gs://sylkar-4cbdc.appspot.com/");
-
         //Click on Upload Button Title will upload to Database
         upload_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 editProfileData();
-
-
             }
         });
-
-
-
-
-
-
-
-
     }
     //Check for Runtime Permissions for Storage Access
     @Override
@@ -164,50 +143,35 @@ public class EditProfileFragment extends Fragment {
             else{
                 startActivity(new Intent(getContext(), Homepage.class));
             }
-
         }
-        // Toast.makeText(getContext(),"Data Added Successfully",Toast.LENGTH_LONG).show();
     }
-
-
-
     //If Access Granted gallery Will open
     private void callgalary() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, GALLERY_INTENT);
     }
-
-
     //After Selecting image from gallery image will directly uploaded to Firebase Database
     //and Image will Show in Image View
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
-
             mImageUri = data.getData();
             user_image.setImageURI(mImageUri);
             StorageReference filePath = mStorage.child("User_Images").child(mImageUri.getLastPathSegment());
             mProgressDialog.setMessage("Uploading Image....");
             mProgressDialog.show();
-
             filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                     Uri downloadUri = taskSnapshot.getDownloadUrl();  //Ignore This error
                     imageurl= downloadUri.toString();
                     mProgressDialog.dismiss();
-
-
-
                 }
             });
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class UpdateEmail extends AppCompatActivity {
-    private FirebaseAuth mAuth;
     Button UpdateEmail;
     TextView EmailAddress;
 
@@ -24,28 +23,21 @@ public class UpdateEmail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_email);
-        mAuth = FirebaseAuth.getInstance();
         if(getSupportActionBar() != null){
-
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
         UpdateEmail = (Button)findViewById(R.id.buttonUpdate);
         EmailAddress = (TextView)findViewById(R.id.editTextEmail);
         UpdateEmail.setOnClickListener((new View.OnClickListener(){
 
-
             @Override
             public void onClick(View v) {
-
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 String email = EmailAddress.getText().toString().trim();
                 if(email.equals(""))
-
                     Toast.makeText(getApplicationContext(), "Fill Required fields", Toast.LENGTH_LONG).show();
                 else {
-
                     user.updateEmail(email)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -60,17 +52,8 @@ public class UpdateEmail extends AppCompatActivity {
                     FirebaseAuth.getInstance().signOut();
                     startActivity(new Intent(UpdateEmail.this, LoginActivity.class));
                 }
-
-
-
-
-
             }
-
-
         }));
-
-
     }
 
     @Override

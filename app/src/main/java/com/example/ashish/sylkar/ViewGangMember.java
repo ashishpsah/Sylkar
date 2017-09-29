@@ -2,7 +2,6 @@ package com.example.ashish.sylkar;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,11 +16,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 public class ViewGangMember extends AppCompatActivity {
-
     FirebaseAuth mAuth;
     private DatabaseReference myref;
     private FirebaseDatabase database;
-    private RecyclerView recyclerView;
     FirebaseRecyclerAdapter<Users, ShowGangMember> recyclerAdapter;
     static String userid;
     private TextView name,job,address,iban,phone;
@@ -32,7 +29,6 @@ public class ViewGangMember extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_gang_member);
         if(getSupportActionBar() != null){
-
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -52,7 +48,6 @@ public class ViewGangMember extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         try {
                             Users users = dataSnapshot.getValue(Users.class);
-
                             name.setText(users.getEtTitle());
                             job.setText("Works as "+users.getEtJob());
                             address.setText("Lives at " +users.getEtAddress());
@@ -61,8 +56,6 @@ public class ViewGangMember extends AppCompatActivity {
                             Picasso.with(ViewGangMember.this)
                                     .load(users.getImageurl())
                                     .into(dp);
-
-
                         }
                         catch (Exception e) {
 
@@ -74,10 +67,6 @@ public class ViewGangMember extends AppCompatActivity {
 
                     }
                 });
-
-
-
-
     }
 
     @Override
@@ -87,7 +76,6 @@ public class ViewGangMember extends AppCompatActivity {
             AdminHomepage adminHomepage = new AdminHomepage();
             adminHomepage.count =1;
             finish();
-
         }
         return super.onOptionsItemSelected(item);
     }

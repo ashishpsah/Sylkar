@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText emailid;
     private EditText password;
     private TextView textView4;
-    private Firebase mRef;
     int count =0;
     //Firebase auth object
     private FirebaseAuth mAuth;
@@ -39,7 +38,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         //Set Context for Firebase before using it
         Firebase.setAndroidContext(this);
-        mRef = new Firebase("https://sylkar-4cbdc.firebaseio.com/");
         mAuth = FirebaseAuth.getInstance();
         //initialize the views
         button3 = (Button) findViewById(R.id.button3);

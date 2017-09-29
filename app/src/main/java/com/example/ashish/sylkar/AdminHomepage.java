@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,10 +37,8 @@ public class AdminHomepage extends AppCompatActivity
     ImageView userimage;
     TextView name,email;
     DatabaseReference myRef;
-    private Firebase mRoofRef;
     FirebaseDatabase database;
     static int count = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,71 +50,47 @@ public class AdminHomepage extends AppCompatActivity
         user = mAuth.getCurrentUser();
         userid = user.getUid().toString();
         database = FirebaseDatabase.getInstance();
-
         myRef = database.getReference();
         set_nav_header();
-
-
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-
-
+    //method for setting navigation header with user data
     public void set_nav_header(){
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         userid = user.getUid().toString();
-
-
-
-            // User logged in
-            //
-            //email.setText("HI ALL");
-
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-            navigationView.setNavigationItemSelectedListener(this);
-            View header=navigationView.getHeaderView(0);
-/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
-            name = (TextView)header.findViewById(R.id.name);
-            email = (TextView)header.findViewById(R.id.email);
-            userimage = (ImageView)header.findViewById(R.id.imageView);
-            String emailAddress = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-            user = mAuth.getCurrentUser();
-            userid = user.getUid().toString();
-            mRoofRef = new Firebase("https://sylkar-4cbdc.firebaseio.com/").child("Users");
-            // Read from the database
-            myRef.child("Users").child(userid).addListenerForSingleValueEvent(
-                    new ValueEventListener() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+        name = (TextView)header.findViewById(R.id.name);
+        email = (TextView)header.findViewById(R.id.email);
+        userimage = (ImageView)header.findViewById(R.id.imageView);
+        String emailAddress = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        user = mAuth.getCurrentUser();
+        userid = user.getUid().toString();
+        // Read from the database
+        myRef.child("Users").child(userid).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             try {
                                 Users users = dataSnapshot.getValue(Users.class);
-
-                                username = users.etTitle; // "John Doe"
+                                username = users.etTitle;
                                 dp = users.imageurl.toString();
                                 name.setText(username);
                                 name.setTextColor(Color.parseColor("#000000"));
-                                //Toast.makeText(Homepage.this,dp, Toast.LENGTH_LONG).show();
-                                //if(!(TextUtils.isEmpty(dp)))
                                 Picasso.with(AdminHomepage.this).load(dp).into(userimage);
                             }
                             catch (Exception e) {
                                 Toast.makeText(AdminHomepage.this,
                                         "Please add your data from Edit Profile menu",
                                         Toast.LENGTH_LONG).show();
-
-
                             }
                         }
 
@@ -126,15 +99,9 @@ public class AdminHomepage extends AppCompatActivity
 
                         }
                     });
-
-
             email.setText(emailAddress.toString());
             email.setTextColor(Color.parseColor("#000000"));
         }
-
-
-
-
 
     @Override
     public void onBackPressed() {
@@ -173,15 +140,14 @@ public class AdminHomepage extends AppCompatActivity
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(AdminHomepage.this, "Successfully send you response...Login Again After Updating your Password", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(AdminHomepage.this, "Successfully send your" +
+                                            " response...Login Again After Updating your Password",
+                                            Toast.LENGTH_LONG).show();
                                 }
-
                             }
 
                         });
                 startActivity(new Intent(this, LoginActivity.class));
-
-
             }
 
         }
@@ -195,8 +161,6 @@ public class AdminHomepage extends AppCompatActivity
             startActivity(new Intent(this, LoginActivity.class));
 
         }
-
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -205,19 +169,16 @@ public class AdminHomepage extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.adminhome) {
             HomeFragment homeFragment = new HomeFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(
                     R.id.relativelayout_for_fragment,
                     homeFragment).commit();
-
         }  else if (id == R.id.mycoll) {
             count = 0;
             MyColleagueFragment myColleagueFragment = new MyColleagueFragment();
@@ -225,8 +186,6 @@ public class AdminHomepage extends AppCompatActivity
             manager.beginTransaction().replace(
                     R.id.relativelayout_for_fragment,
                     myColleagueFragment).commit();
-
-
         }
         else if (id == R.id.gdetails) {
             MyColleagueFragment myColleagueFragment = new MyColleagueFragment();
@@ -235,8 +194,6 @@ public class AdminHomepage extends AppCompatActivity
                     R.id.relativelayout_for_fragment,
                     myColleagueFragment).commit();
             count =1;
-
-
         }
         else if (id == R.id.addcoll) {
             AddUserFragment addUserFragment = new AddUserFragment();
@@ -245,7 +202,6 @@ public class AdminHomepage extends AppCompatActivity
                     R.id.relativelayout_for_fragment,
                     addUserFragment).commit();
             count =0;
-
         } else if (id == R.id.addinventory) {
             AddInventory addInventory = new AddInventory();
             FragmentManager manager = getSupportFragmentManager();
@@ -253,14 +209,12 @@ public class AdminHomepage extends AppCompatActivity
                     R.id.relativelayout_for_fragment,
                     addInventory).commit();
             count = 0;
-
         } else if (id == R.id.updateinventory) {
             UpdateInventory updateInventory = new UpdateInventory();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(
                     R.id.relativelayout_for_fragment,
                     updateInventory).commit();
-
         } else if (id == R.id.admineditprofile) {
             EditProfileFragment editProfileFragment = new EditProfileFragment();
             FragmentManager manager = getSupportFragmentManager();
@@ -268,23 +222,18 @@ public class AdminHomepage extends AppCompatActivity
                     R.id.relativelayout_for_fragment,
                     editProfileFragment).commit();
             count = 0;
-
-        }
-        else if (id == R.id.delcoll) {
+        } else if (id == R.id.delcoll) {
             MyColleagueFragment myColleagueFragment = new MyColleagueFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(
                     R.id.relativelayout_for_fragment,
                     myColleagueFragment).commit();
             count = 2;
-
-        }else if (id == R.id.logout) {
+        } else if (id == R.id.logout) {
             finish();
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, LoginActivity.class));
-
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

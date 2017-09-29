@@ -16,7 +16,6 @@ public class ShowDataViewHolder extends RecyclerView.ViewHolder {
     private final ImageView imageView;
     View mView;
 
-
     public ShowDataViewHolder(final View itemView) {
         super(itemView);
         mView = itemView;
@@ -29,12 +28,8 @@ public class ShowDataViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setImageurl(String imageurl) {
-
         Picasso.with(mView.getContext())
                 .load(imageurl)
                 .into(imageView);
-
     }
-
-
 }

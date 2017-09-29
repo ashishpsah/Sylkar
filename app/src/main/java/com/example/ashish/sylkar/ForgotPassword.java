@@ -36,7 +36,6 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
         mAuth = FirebaseAuth.getInstance();
         buttonForgotPassword.setOnClickListener(this);
         if(getSupportActionBar() != null){
-
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
