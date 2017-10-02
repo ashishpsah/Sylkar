@@ -56,40 +56,27 @@ public class Homepage extends AppCompatActivity
         user = mAuth.getCurrentUser();
         userid = user.getUid().toString();
         database = FirebaseDatabase.getInstance();
-
         myRef = database.getReference();
-
-            set_nav_header();
-
-
+        set_nav_header();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
+    //method for setting navigation header
     public void set_nav_header(){
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        userid = user.getUid().toString();
-
-
-
+            mAuth = FirebaseAuth.getInstance();
+            user = mAuth.getCurrentUser();
+            userid = user.getUid().toString();
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
             navigationView.setNavigationItemSelectedListener(this);
             View header=navigationView.getHeaderView(0);
-/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
             name = (TextView)header.findViewById(R.id.name);
             email = (TextView)header.findViewById(R.id.email);
             userimage = (ImageView)header.findViewById(R.id.imageView);
@@ -117,8 +104,6 @@ public class Homepage extends AppCompatActivity
                                 Toast.makeText(Homepage.this,
                                         "Please add your data from Edit Profile menu",
                                         Toast.LENGTH_LONG).show();
-
-
                             }
                         }
 
@@ -132,8 +117,6 @@ public class Homepage extends AppCompatActivity
             email.setText(emailAddress.toString());
             email.setTextColor(Color.parseColor("#000000"));
         }
-
-
 
     @Override
     public void onBackPressed() {
@@ -178,8 +161,6 @@ public class Homepage extends AppCompatActivity
                                             "Successfully send you response..." +
                                                     "Login Again After Updating your Password",
                                             Toast.LENGTH_LONG).show();
-
-
                                 }
 
                             }
@@ -188,8 +169,6 @@ public class Homepage extends AppCompatActivity
                 finish();
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(this, LoginActivity.class));
-
-
             }
 
         }
@@ -215,7 +194,6 @@ public class Homepage extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.home)
         {
-
             HomeFragment homeFragment = new HomeFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(

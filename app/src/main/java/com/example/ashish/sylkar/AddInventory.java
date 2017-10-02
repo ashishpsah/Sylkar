@@ -50,7 +50,9 @@ public class AddInventory extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //setting the title of activity
         getActivity().setTitle("Add Inventory");
+        //setting the context of firebase
         Firebase.setAndroidContext(getContext());
         select_image = (Button)getView().findViewById(R.id.select_image);
         upload_button = (Button)getView().findViewById(R.id.upload_bttn);
@@ -119,23 +121,20 @@ public class AddInventory extends Fragment {
     {
         String Name = etName.getText().toString().trim();
         String Quant = etQuant.getText().toString().trim();
-
+        //if required field is not filled
         if(Name.equals("")|| Quant.equals("")) {
-
             Toast.makeText(getContext(), "Fill Required fields", Toast.LENGTH_LONG).show();
             return;
         }
-
         else {
             InventoryData data = new InventoryData(Name,Quant, imageurl);
             Firebase newRef = mRoofRef.push();
             newRef.setValue(data);
             Toast.makeText(getContext(), "Updated Info", Toast.LENGTH_LONG).show();
-
+            //diffrentiating admin from other users by UID
             if(userid.equals("yvprnDUyyOTijsHOQmpg6a11luA3")){
                 startActivity(new Intent(getContext(), AdminHomepage.class));
             }
-
             else{
                 startActivity(new Intent(getContext(), Homepage.class));
             }

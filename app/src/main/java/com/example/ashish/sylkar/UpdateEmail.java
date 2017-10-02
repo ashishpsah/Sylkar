@@ -36,14 +36,19 @@ public class UpdateEmail extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 String email = EmailAddress.getText().toString().trim();
                 if(email.equals(""))
-                    Toast.makeText(getApplicationContext(), "Fill Required fields", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Fill Required fields",
+                            Toast.LENGTH_LONG).show();
                 else {
                     user.updateEmail(email)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(UpdateEmail.this, "Successfully send you response...Login Again After Updating your Password", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(UpdateEmail.this,
+                                                "Successfully send you response..." +
+                                                        "Login Again After " +
+                                                        "Updating your Password",
+                                                Toast.LENGTH_LONG).show();
 
                                     }
                                 }

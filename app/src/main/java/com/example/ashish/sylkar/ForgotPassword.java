@@ -73,8 +73,6 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (!task.isSuccessful()) {
-
-
                                             try {
                                                 throw task.getException();
                                             }

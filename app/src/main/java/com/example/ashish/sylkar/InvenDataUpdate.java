@@ -34,8 +34,6 @@ public class InvenDataUpdate extends AppCompatActivity implements View.OnClickLi
     private TextView name;
     private ImageView dp;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +46,12 @@ public class InvenDataUpdate extends AppCompatActivity implements View.OnClickLi
         user = mAuth.getCurrentUser();
         userid = user.getUid().toString();
         if(getSupportActionBar() != null){
-
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         database = FirebaseDatabase.getInstance();
         //get data from database
         myRef = database.getReference();
-
         myRef.child("Inventory").child(Key).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override

@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -43,7 +42,6 @@ public class DelAccount extends Fragment {
     FirebaseUser user;
     private DatabaseReference myref;
     private FirebaseDatabase database;
-    FirebaseRecyclerAdapter<Users, ShowGangMember> recyclerAdapter;
     static String userid,uniqueid;
     private TextView name;
     private EditText email,password;
@@ -120,7 +118,7 @@ public class DelAccount extends Fragment {
             }
         });
     }
-
+    //method for user to delete their account
     private void accountDelete(final String email, final String password){
         if (!validateForm()) {
             return;
@@ -163,6 +161,7 @@ public class DelAccount extends Fragment {
                 });
     }
 
+    //method for admin to delete user's account
     private void DeleteAccount(final String email, final String password) {
         if (!validateForm()) {
             return;

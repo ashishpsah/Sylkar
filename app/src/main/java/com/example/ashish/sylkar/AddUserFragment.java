@@ -42,10 +42,12 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //setting activity title
         getActivity().setTitle("Add Colleague");
         buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
         editTextEmail = (EditText) getView().findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) getView().findViewById(R.id.editTextPassword);
+        //click event on click event of button
         buttonRegister.setOnClickListener((new View.OnClickListener(){
 
 
@@ -57,6 +59,8 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
         }));
         mAuth = FirebaseAuth.getInstance();
     }
+
+    //method for creating new user
     private void createAccount(final String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
@@ -89,9 +93,6 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
                                 Toast.makeText(getContext(), "Weak Password Choose a strong one",
                                         Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "onComplete: weak_password");
-
-
-                                // TODO: take your actions!
                             }
                             // if user enters wrong password.
                             catch (FirebaseAuthInvalidCredentialsException malformedEmail)
@@ -99,16 +100,12 @@ public class AddUserFragment extends Fragment implements OnCompleteListener {
                                 Log.d(TAG, "onComplete: malformed_email");
                                 Toast.makeText(getContext(), "Enter Valid email id",
                                         Toast.LENGTH_SHORT).show();
-
-                                // TODO: Take your action
                             }
                             catch (FirebaseAuthUserCollisionException existEmail)
                             {
                                 Log.d(TAG, "onComplete: exist_email");
                                 Toast.makeText(getContext(), "User already exists",
                                         Toast.LENGTH_SHORT).show();
-
-                                // TODO: Take your action
                             }
                             catch (Exception e)
                             {

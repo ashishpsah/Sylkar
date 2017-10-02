@@ -32,9 +32,7 @@ import com.google.firebase.storage.UploadTask;
 import static android.app.Activity.RESULT_OK;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class EditProfileFragment extends Fragment {
     Button select_image,upload_button;
     ImageView user_image;
@@ -123,19 +121,18 @@ public class EditProfileFragment extends Fragment {
         String Address = etAddress.getText().toString().trim();
         String IBAN = etIBAN.getText().toString().trim();
         String Job = etJob.getText().toString().trim();
+        //form validation
         if(Name.equals("")|| Phone.equals("")|| Address.equals("")|| IBAN.equals("")|| Job.equals("")) {
-
             Toast.makeText(getContext(), "Fill Required fields", Toast.LENGTH_LONG).show();
             return;
         }
-
         else {
             mdatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
             Users users = new Users(Name, Address, Phone, IBAN, Job, imageurl);
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             mdatabaseRef.child(uid).setValue(users);
             Toast.makeText(getContext(), "Updated Info", Toast.LENGTH_LONG).show();
-
+            //diffrentiating admin and other users
             if(userid.equals("yvprnDUyyOTijsHOQmpg6a11luA3")){
                 startActivity(new Intent(getContext(), AdminHomepage.class));
             }

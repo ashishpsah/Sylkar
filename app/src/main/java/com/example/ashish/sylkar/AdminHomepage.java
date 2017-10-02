@@ -65,6 +65,7 @@ public class AdminHomepage extends AppCompatActivity
     public void set_nav_header(){
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        //getting the UID of currently logged in user
         userid = user.getUid().toString();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -72,9 +73,8 @@ public class AdminHomepage extends AppCompatActivity
         name = (TextView)header.findViewById(R.id.name);
         email = (TextView)header.findViewById(R.id.email);
         userimage = (ImageView)header.findViewById(R.id.imageView);
+        //getting email id of currently logged in user
         String emailAddress = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        user = mAuth.getCurrentUser();
-        userid = user.getUid().toString();
         // Read from the database
         myRef.child("Users").child(userid).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -93,7 +93,6 @@ public class AdminHomepage extends AppCompatActivity
                                         Toast.LENGTH_LONG).show();
                             }
                         }
-
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
 
@@ -112,14 +111,12 @@ public class AdminHomepage extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.admin_homepage, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -149,7 +146,6 @@ public class AdminHomepage extends AppCompatActivity
                         });
                 startActivity(new Intent(this, LoginActivity.class));
             }
-
         }
         if (id == R.id.updateEmail){
             startActivity(new Intent(this, UpdateEmail.class));
@@ -161,7 +157,7 @@ public class AdminHomepage extends AppCompatActivity
             startActivity(new Intent(this, LoginActivity.class));
 
         }
-        //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_settings) {
             return true;
         }

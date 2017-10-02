@@ -6,7 +6,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +18,6 @@ public class ViewGangMember extends AppCompatActivity {
     FirebaseAuth mAuth;
     private DatabaseReference myref;
     private FirebaseDatabase database;
-    FirebaseRecyclerAdapter<Users, ShowGangMember> recyclerAdapter;
     static String userid;
     private TextView name,job,address,iban,phone;
     private ImageView dp;
